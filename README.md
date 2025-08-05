@@ -37,16 +37,16 @@ PROTEIN_SEQUENCE_3
 <details>
 <summary>View Command Line Code for Sequence Clustering</summary>
 
-```linux
+```bash
 # We used MMseqs2 to cluster sequences at 75% sequence similarity 
 
-## 1. Install mmseqs2
+## Step 1: Install MMseqs2
 brew install mmseqs2
 
-## 2. Create a database from our sequence fasta for clustering
+## Step 2: Convert FASTA to MMseqs2 database
 mmseqs createdb our_sequence_file.fa seqDB
 
-## 3. Cluster at 75% sequence identity for 80% coverage of the shorter sequence
+## Step 3: Cluster sequences at 75% identity and 80% coverage (shorter sequence)
 mmseqs linclust \
   seqDB \
   clusterDB \
@@ -55,10 +55,10 @@ mmseqs linclust \
   -c 0.8 \
   --cov-mode 1
   
-## 4.  Export cluster assignments to TSV
+## Step 4:  Export cluster assignments in TSV format
 mmseqs createtsv seqDB seqDB clusterDB clusters.tsv
 
-## 5. Filter for clusters with ≥10 members
+## Step 5: Filter clusters to retain only those with ≥10 members
 awk '{count[$1]++; lines[NR]=$0; cluster[NR]=$1} END {for (i=1; i<=NR; i++) if (count[cluster[i]] >= 10) print lines[i]}' clusters.tsv > clusters_filtered.tsv
 
 ```
