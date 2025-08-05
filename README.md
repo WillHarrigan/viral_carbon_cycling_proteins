@@ -177,7 +177,7 @@ The following code trims a Newick-formatted phylogenetic tree, retaining only th
 ./tree_files/sequences_to_keep.txt
 ```
 
-Example format:
+Example format for text file containing sequences to keep:
 
 ```
 day7_DO_0_13C_cell_enriched_000000134786_8
