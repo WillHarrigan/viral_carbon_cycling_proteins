@@ -118,7 +118,7 @@ with open('./viral_recycle_dm.phylip', 'w') as f:
 The `.phylip` file was loaded into [**TreeViewer**](https://github.com/arklumpus/TreeViewer) for dendrogram construction.
 
 To open the distance matrix as a tree go to File -> New -> Click Neighbor-Joining, Distance Matrix -> Load from file:
-![TreeViewer Example](./tree_viewer_make_tree.png)
+![TreeViewer Example](./screenshots/tree_viewer_make_tree.png)
 
 ---
 
@@ -129,7 +129,7 @@ To save the tree:
 > Navigate to **File → Save Loaded Tree → Newick format**
 
 The resulting `.nwk` file can be used for further visualization or integration with phylogenetic tools (e.g., Iroki, ITOL).
-![TreeViewer Example](./final_tree.png)
+![TreeViewer Example](./screenshots/final_tree.png)
 
 ---
 
