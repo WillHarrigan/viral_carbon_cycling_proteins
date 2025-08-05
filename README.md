@@ -137,6 +137,7 @@ The resulting `.nwk` file can be used for further visualization or integration w
 
 To collapsing clades.
 ![TreeViewer tree collapse](./screenshots/collapse_clades.png)
+![TreeViewer tree collapse2](./screenshots/collapse_2.png)
 
 ---
 
