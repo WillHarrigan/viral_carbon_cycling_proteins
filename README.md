@@ -40,13 +40,13 @@ PROTEIN_SEQUENCE_3
 ```python
 #### We used MMseqs2 to cluster sequences at 75% sequence similarity 
 
-1. Install mmseqs2
+# 1. Install mmseqs2
 brew install mmseqs2
 
-2. Create a database from our sequence fasta for clustering
+# 2. Create a database from our sequence fasta for clustering
 mmseqs createdb our_sequence_file.fa seqDB
 
-3. Cluster at 75% sequence identity for 80% coverage of the shorter sequence
+# 3. Cluster at 75% sequence identity for 80% coverage of the shorter sequence
 mmseqs linclust \
   seqDB \
   clusterDB \
@@ -55,10 +55,10 @@ mmseqs linclust \
   -c 0.8 \
   --cov-mode 1
   
-4.  Export cluster assignments to TSV
+#4.  Export cluster assignments to TSV
 mmseqs createtsv seqDB seqDB clusterDB clusters.tsv
 
-5. Filter for clusters with ≥10 members
+# 5. Filter for clusters with ≥10 members
 awk '{count[$1]++; lines[NR]=$0; cluster[NR]=$1} END {for (i=1; i<=NR; i++) if (count[cluster[i]] >= 10) print lines[i]}' clusters.tsv > clusters_filtered.tsv
 
 ```
