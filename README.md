@@ -34,9 +34,6 @@ PROTEIN_SEQUENCE_3
 * Only clusters with **≥10 sequences** were retained.
 * Final dataset: **3,457 protein sequences**.
 
-<details>
-<summary>View Command Line Code for Sequence Clustering</summary>
-
 ```bash
 # We used MMseqs2 to cluster sequences at 75% sequence similarity 
 
@@ -63,7 +60,6 @@ awk '{count[$1]++; lines[NR]=$0; cluster[NR]=$1} END {for (i=1; i<=NR; i++) if (
 
 ```
 
-</details>
 
 ---
 
