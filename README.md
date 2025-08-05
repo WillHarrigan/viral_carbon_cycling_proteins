@@ -4,9 +4,9 @@ This repository contains an analysis pipeline for identifying viral proteins pot
 
 ---
 
-## 📌 Project Overview
+## Page Overview
 
-**Goal:** Identify clusters of viral proteins that may play a role in carbon cycling, based on sequence similarity and protein function inference.
+Currently, this page provides the process to generate a protein similarity tree in TreeViewer and collapse clades in that tree. 
 
 ---
 
