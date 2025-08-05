@@ -129,6 +129,7 @@ To save the tree:
 > Navigate to **File → Save Loaded Tree → Newick format**
 
 The resulting `.nwk` file can be used for further visualization or integration with phylogenetic tools (e.g., Iroki, ITOL).
+![TreeViewer Example](./final_tree.png)
 
 ---
 
