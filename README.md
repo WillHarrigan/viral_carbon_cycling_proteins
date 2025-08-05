@@ -72,9 +72,9 @@ PROTEIN_SEQUENCE_1 → PROTEIN_SEQUENCE_2
 PROTEIN_SEQUENCE_1 → PROTEIN_SEQUENCE_3  
 PROTEIN_SEQUENCE_2 → PROTEIN_SEQUENCE_3  
 ...
-```
+🔗 GitHub Repository: protein_embed_softalign
 
-Total comparisons: **5,973,696**
+Total comparisons: 5,973,696
 
 ---
 
