@@ -169,6 +169,60 @@ To collapsing clades.
 
 ---
 
+### 9. Prune Newick Tree
+
+The following code trims a Newick-formatted phylogenetic tree, retaining only the branches (leaf nodes) that appear in a provided list of sequence IDs. The sequence list is stored in:
+
+```
+./tree_files/sequences_to_keep.txt
+```
+
+Example format:
+
+```
+day7_DO_0_13C_cell_enriched_000000134786_8
+day0_DO_0_env_cell_control_000001504602_18
+day0_DO_0_env_cell_control_000000007701_2
+day7_DO_0_12C_cell_enriched_000000646687_2
+...
+```
+
+```python
+from Bio import Phylo
+
+# Load the full tree
+tree = Phylo.read("./tree_files/viral_recycle_newick.nwk", "newick")
+
+# Load sequence IDs to keep
+with open("./tree_files/sequences_to_keep.txt") as f:
+    keep_ids = set(line.strip() for line in f if line.strip())
+
+# Prune all leaf nodes not in keep_ids
+for leaf in tree.get_terminals():
+    if leaf.name not in keep_ids:
+        tree.prune(leaf)
+
+# === OPTIONAL: Rename leaf names using a mapping ===
+rename_dict = {
+    # "original_name": "new_name",
+    "day7_DO_0_13C_cell_enriched_000000134786_8": "D7_13C_134786",
+    "day0_DO_0_env_cell_control_000001504602_18": "D0_env_1504602",
+    "day0_DO_0_env_cell_control_000000007701_2": "D0_env_7701",
+    "day7_DO_0_12C_cell_enriched_000000646687_2": "D7_12C_646687"
+}
+
+# Apply renaming
+for leaf in tree.get_terminals():
+    if leaf.name in rename_dict:
+        leaf.name = rename_dict[leaf.name]
+
+# Write the trimmed and renamed tree to a new file
+Phylo.write(tree, "trimmed_tree.newick", "newick")
+```
+
+
+---
+
 ## GitHub Repository Structure
 
 ```
