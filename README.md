@@ -133,6 +133,13 @@ The resulting `.nwk` file can be used for further visualization or integration w
 
 ---
 
+### 8. Collapse Clades in Tree
+
+To collapsing clades.
+![TreeViewer tree collapse](./screenshots/collapse_clades.png)
+
+---
+
 ## GitHub Repository Structure
 
 ```
