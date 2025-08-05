@@ -34,6 +34,37 @@ PROTEIN_SEQUENCE_3
 * Only clusters with **≥10 sequences** were retained.
 * Final dataset: **3,457 protein sequences**.
 
+<details>
+<summary>View Command Line Code for Sequence Clustering</summary>
+
+```python
+#### We used MMseqs2 to cluster sequences at 75% sequence similarity 
+
+1. Install mmseqs2
+brew install mmseqs2
+
+2. Create a database from our sequence fasta for clustering
+mmseqs createdb our_sequence_file.fa seqDB
+
+3. Cluster at 75% sequence identity for 80% coverage of the shorter sequence
+mmseqs linclust \
+  seqDB \
+  clusterDB \
+  tmp \
+  --min-seq-id 0.75 \
+  -c 0.8 \
+  --cov-mode 1
+  
+4.  Export cluster assignments to TSV
+mmseqs createtsv seqDB seqDB clusterDB clusters.tsv
+
+5. Filter for clusters with ≥10 members
+awk '{count[$1]++; lines[NR]=$0; cluster[NR]=$1} END {for (i=1; i<=NR; i++) if (count[cluster[i]] >= 10) print lines[i]}' clusters.tsv > clusters_filtered.tsv
+
+```
+
+</details>
+
 ---
 
 ### 3. Pairwise Sequence Comparison
