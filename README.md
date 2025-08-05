@@ -1,1 +1,151 @@
-# viral_carbon_cycling_proteins
+# viral\_carbon\_cycling\_proteins
+
+This repository contains an analysis pipeline for identifying viral proteins potentially involved in carbon recycling. We work from predicted protein sequences to construct a protein similarity dendrogram (i.e., a protein tree), allowing us to cluster sequences and infer protein function for phenotypic characterization of viral genotypes.
+
+---
+
+## 📌 Project Overview
+
+**Goal:** Identify clusters of viral proteins that may play a role in carbon cycling, based on sequence similarity and protein function inference.
+
+---
+
+## Workflow
+
+### 1. Input Protein Sequences
+
+Predicted protein sequences were provided in FASTA format:
+
+```plaintext
+>Sequence_ID_1
+PROTEIN_SEQUENCE_1
+>Sequence_ID_2
+PROTEIN_SEQUENCE_2
+>Sequence_ID_3
+PROTEIN_SEQUENCE_3
+...
+```
+
+---
+
+### 2. Sequence Clustering
+
+* Sequences were clustered at **75% sequence similarity**.
+* Only clusters with **≥10 sequences** were retained.
+* Final dataset: **3,457 protein sequences**.
+
+---
+
+### 3. Pairwise Sequence Comparison
+
+All-versus-all pairwise comparisons were conducted across the filtered sequences:
+
+```plaintext
+PROTEIN_SEQUENCE_1 → PROTEIN_SEQUENCE_2  
+PROTEIN_SEQUENCE_1 → PROTEIN_SEQUENCE_3  
+PROTEIN_SEQUENCE_2 → PROTEIN_SEQUENCE_3  
+...
+```
+
+Total comparisons: **5,973,696**
+
+---
+
+### 4. Alignment Score Output
+
+Pairwise comparison results were saved in a tab-separated file:
+
+**File:** `tree_files/viral_recycling_sa_scores_total.tsv.zip`
+
+| Sequence-ID1 | Sequence-ID2 | Matches | Length1 | Length2 |
+| ------------ | ------------ | ------- | ------- | ------- |
+| PROTEIN\_1   | PROTEIN\_2   | 15      | 100     | 150     |
+| PROTEIN\_1   | PROTEIN\_3   | 75      | 100     | 200     |
+| PROTEIN\_2   | PROTEIN\_3   | 10      | 150     | 200     |
+
+---
+
+### 5. Convert to Distance Matrix
+
+A distance matrix was generated using the following logic:
+
+```python
+dist = 1 - (alignment_score / min(length1, length2))
+```
+
+📁 Output: [`tree_files/viral_recycle_dm.phylip`](tree_files/viral_recycle_dm.phylip)
+
+<details>
+<summary>View Python script</summary>
+
+```python
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("viral_recycling_sa_scores_total.tsv", sep="\t", header=None,
+                 names=["seq_1", "seq_2", "alignment", "seq_1_len", "seq_2_len"])
+
+seqs = sorted(set(df["seq_1"]).union(df["seq_2"]))
+dist_matrix = pd.DataFrame(np.nan, index=seqs, columns=seqs)
+
+for _, row in df.iterrows():
+    s1, s2 = row["seq_1"], row["seq_2"]
+    aln = row["alignment"]
+    l1, l2 = row["seq_1_len"], row["seq_2_len"]
+    dist = 1 - (aln / min(l1, l2))
+    if s1 != s2:
+        if seqs.index(s1) > seqs.index(s2):
+            dist_matrix.loc[s1, s2] = dist
+        else:
+            dist_matrix.loc[s2, s1] = dist
+
+for s in seqs:
+    dist_matrix.loc[s, s] = 0.0
+
+with open('./viral_recycle_dm.phylip', 'w') as f:
+    f.write(f"{len(seqs)}\n")
+    for i, label in enumerate(seqs):
+        values = " ".join(f"{dist_matrix.iloc[i, j]:.5f}" for j in range(i + 1))
+        f.write(f"{label} {values}\n")
+```
+
+</details>
+
+---
+
+### 6. Visualize Protein Tree
+
+The `.phylip` file was loaded into [**TreeViewer**](https://github.com/arklumpus/TreeViewer) for dendrogram construction.
+
+📷 Example screenshot:
+![TreeViewer Example](./tree_viewer_make_tree.png)
+
+---
+
+### 7. Export Tree in Newick Format
+
+To save the tree:
+
+> Navigate to **File → Save Loaded Tree → Newick format**
+
+The resulting `.nwk` file can be used for further visualization or integration with phylogenetic tools (e.g., Iroki, ITOL).
+
+---
+
+## 📁 Repository Structure
+
+```
+viral_carbon_cycling_proteins/
+├── tree_files/
+│   ├── viral_recycling_sa_scores_total.tsv.zip
+│   ├── viral_recycle_dm.phylip
+│   └── tree_viewer_make_tree.png
+├── viral_recycle_make_dm.ipynb
+└── README.md
+```
+
+---
+
+## 📩 Contact
+
+For questions or collaboration inquiries, feel free to reach out via [GitHub Issues](https://github.com/your-username/viral_carbon_cycling_proteins/issues) or contact the project lead.
